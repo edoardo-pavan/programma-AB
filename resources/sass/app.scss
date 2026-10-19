@@ -6,3 +6,48 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+:root {
+  --bovi-navy: #0e1f3d;
+  --bovi-navy-2: #16294d;
+  --bovi-blue: #2563eb;
+  --bovi-bg: #f3f5f9;
+}
+
+.bovi-body { background: var(--bovi-bg); min-height: 100vh; }
+
+.bovi-sidebar {
+  position: fixed; top: 0; bottom: 0; left: 0; width: 250px;
+  background: var(--bovi-navy); color: #cfd8ea;
+  padding: 1.25rem 1rem; overflow-y: auto;
+}
+.bovi-logo { color: #fff; font-size: .8rem; letter-spacing: .12em; margin: .25rem .5rem 1.75rem; }
+.bovi-logo strong { display: block; font-size: 1.9rem; letter-spacing: .04em; font-style: italic; }
+
+.bovi-nav a {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .65rem .85rem; margin-bottom: .2rem;
+  color: #cfd8ea; text-decoration: none; border-radius: .6rem;
+}
+.bovi-nav a i { font-size: 1.1rem; }
+.bovi-nav a:hover { background: var(--bovi-navy-2); color: #fff; }
+.bovi-nav a.attiva { background: var(--bovi-blue); color: #fff; }
+.bovi-nav a.disabilitata { opacity: .4; pointer-events: none; }
+.bovi-nav .sezione { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: #7f8db0; margin: 1.25rem .85rem .4rem; }
+
+.bovi-main { margin-left: 250px; }
+.bovi-topbar {
+  background: var(--bovi-navy); color: #cfd8ea;
+  padding: .85rem 2rem; display: flex; justify-content: space-between; align-items: center;
+}
+.bovi-content { padding: 2rem; }
+
+.bovi-card { background: #fff; border: 1px solid #e3e8f2; border-radius: .9rem; padding: 1.25rem; }
+.bovi-kpi { display: flex; align-items: center; gap: 1rem; }
+.bovi-kpi .icona {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 1.4rem;
+}
+.bovi-kpi .valore { font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+.bovi-kpi .etichetta { font-size: .85rem; color: #6b7894; }

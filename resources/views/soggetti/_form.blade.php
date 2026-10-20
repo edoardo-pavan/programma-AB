@@ -39,7 +39,7 @@
             <label class="form-label">Codice fiscale</label>
             <input name="codice_fiscale" value="{{ $campo('codice_fiscale') }}" class="form-control">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 sezione-cliente">
             <label class="form-label">Codice SDI</label>
             <input name="codice_sdi" value="{{ $campo('codice_sdi') }}" class="form-control">
         </div>
@@ -79,12 +79,12 @@
             @error('pec') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 sezione-cliente">
             <label class="form-label">Condizioni di pagamento</label>
             <input name="condizioni_pagamento" value="{{ $campo('condizioni_pagamento') }}"
                    class="form-control" placeholder="es. Bonifico 60 gg fine mese">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 sezione-fornitore">
             <label class="form-label">Categoria fornitore</label>
             <select name="categoria_fornitore" class="form-select">
                 <option value="">-</option>
@@ -113,3 +113,24 @@
     <button class="btn btn-primary" type="submit">Salva</button>
     <a href="{{ route('soggetti.index') }}" class="btn btn-outline-secondary">Annulla</a>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cliente = document.getElementById('is_cliente');
+    const fornitore = document.getElementById('is_fornitore');
+
+    function aggiornaSezioni() {
+        document.querySelectorAll('.sezione-cliente').forEach(el => {
+            el.hidden = !cliente.checked;
+        });
+
+        document.querySelectorAll('.sezione-fornitore').forEach(el => {
+            el.hidden = !fornitore.checked;
+        });
+    }
+
+    cliente.addEventListener('change', aggiornaSezioni);
+    fornitore.addEventListener('change', aggiornaSezioni);
+    aggiornaSezioni();
+});
+</script>

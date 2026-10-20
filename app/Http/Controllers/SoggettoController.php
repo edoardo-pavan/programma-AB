@@ -53,20 +53,30 @@ class SoggettoController extends Controller
 
     public function edit(Soggetto $soggetto)
     {
-        return view('soggetti.edit', compact('soggetto'));
-    }
+            return view('soggetti.edit', compact('soggetto'));
+        }
 
-    public function update(Request $request, Soggetto $soggetto)
-    {
+        public function update(Request $request, Soggetto $soggetto)
+        {
         $dati = $this->validati($request, $soggetto);
 
         if (! $dati['is_cliente'] && ! $dati['is_fornitore']) {
-            return back()->withInput()->withErrors(['is_cliente' => 'Seleziona almeno cliente o fornitore.']);
+            return back()->withInput()->withErrors([
+                'is_cliente' => 'Seleziona almeno cliente o fornitore.',
+            ]);
+        }
+
+        // Conserva i dati commerciali quando i campi non sono inviati.
+        foreach (['codice_sdi', 'condizioni_pagamento', 'categoria_fornitore'] as $campo) {
+            if (! $request->exists($campo)) {
+                unset($dati[$campo]);
+            }
         }
 
         $soggetto->update($dati);
 
-        return redirect()->route('soggetti.index')->with('ok', 'Soggetto aggiornato.');
+        return redirect()->route('soggetti.index')
+            ->with('ok', 'Soggetto aggiornato.');
     }
 
     private function validati(Request $request, ?Soggetto $soggetto = null): array

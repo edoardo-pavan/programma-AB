@@ -14,7 +14,7 @@
         ['Viaggi',               'bi-truck',              null,   null],
         ['Offerte',              'bi-file-earmark-text',  null,   null],
         ['Clienti e fornitori', 'bi-people', 'soggetti.index', 'soggetti.*'],
-        ['Mezzi',                'bi-truck-flatbed',      null,   null],
+        ['Mezzi', 'bi-truck-flatbed', 'mezzi.index', 'mezzi.*'],
         ['Dipendenti',           'bi-person-badge',       null,   null],
         ['Scadenze',             'bi-calendar-event',     null,   null],
         ['Report',               'bi-bar-chart',          null,   null],

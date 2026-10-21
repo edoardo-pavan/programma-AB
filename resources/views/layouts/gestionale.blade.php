@@ -15,7 +15,7 @@
         ['Offerte',              'bi-file-earmark-text',  null,   null],
         ['Clienti e fornitori', 'bi-people', 'soggetti.index', 'soggetti.*'],
         ['Mezzi', 'bi-truck-flatbed', 'mezzi.index', 'mezzi.*'],
-        ['Dipendenti',           'bi-person-badge',       null,   null],
+        ['Dipendenti', 'bi-person-badge', 'dipendenti.index', 'dipendenti.*'],
         ['Scadenze',             'bi-calendar-event',     null,   null],
         ['Report',               'bi-bar-chart',          null,   null],
         ['Impostazioni',         'bi-gear',               null,   null],

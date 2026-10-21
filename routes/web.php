@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoggettoController;
 use App\Http\Controllers\MezzoController;
+use App\Http\Controllers\DipendenteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,6 +14,10 @@ Auth::routes(['register' => false]);
     Route::resource('mezzi', MezzoController::class)
         ->except(['show', 'destroy'])
         ->parameters(['mezzi' => 'mezzo']);
+    
+    Route::resource('dipendenti', DipendenteController::class)
+        ->except(['show', 'destroy'])
+        ->parameters(['dipendenti' => 'dipendente']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

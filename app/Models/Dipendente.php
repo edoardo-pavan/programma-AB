@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HaDocumenti;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Dipendente extends Model
 {
+    use HaDocumenti;
+
     protected $table = 'dipendenti';
 
     protected $guarded = [];
@@ -38,5 +41,14 @@ class Dipendente extends Model
     public function getNomeCompletoAttribute(): string
     {
         return trim($this->cognome . ' ' . $this->nome);
+    }
+
+    /** Tipi di documento che si possono allegare a questo dipendente. */
+    public function tipiDocumento(): array
+    {
+        return Documento::etichette([
+            'patente', 'cqc', 'patentino_adr', 'carta_tachigrafica',
+            'visita_medica', 'corso_sicurezza', 'altro',
+        ]);
     }
 }

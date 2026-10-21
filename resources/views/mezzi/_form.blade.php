@@ -9,14 +9,17 @@
 <div class="bovi-card mb-3">
     <div class="row g-3">
         <div class="col-md-3">
-            <label class="form-label">Targa *</label>
+            <label class="form-label">
+                Targa <span id="targa-obbligatoria">*</span>
+            </label>
             <input name="targa" value="{{ $campo('targa') }}"
                    class="form-control text-uppercase @error('targa') is-invalid @enderror">
             @error('targa') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <div class="form-text">Facoltativa solo per il tipo "Altro".</div>
         </div>
         <div class="col-md-3">
             <label class="form-label">Tipo *</label>
-            <select name="tipo" class="form-select @error('tipo') is-invalid @enderror">
+            <select name="tipo" id="tipo" class="form-select @error('tipo') is-invalid @enderror">
                 <option value="">-</option>
                 @foreach (\App\Models\Mezzo::TIPI as $valore => $etichetta)
                     <option value="{{ $valore }}" @selected($campo('tipo') === $valore)>{{ $etichetta }}</option>
@@ -26,12 +29,13 @@
         </div>
         <div class="col-md-3">
             <label class="form-label">Sottotipo</label>
-            <select name="sottotipo" class="form-select">
+            <select name="sottotipo" class="form-select @error('sottotipo') is-invalid @enderror">
                 <option value="">-</option>
                 @foreach (\App\Models\Mezzo::SOTTOTIPI as $valore => $etichetta)
                     <option value="{{ $valore }}" @selected($campo('sottotipo') === $valore)>{{ $etichetta }}</option>
                 @endforeach
             </select>
+            @error('sottotipo') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-3">
             <label class="form-label">Portata (t)</label>
@@ -86,3 +90,17 @@
     <button class="btn btn-primary" type="submit">Salva</button>
     <a href="{{ route('mezzi.index') }}" class="btn btn-outline-secondary">Annulla</a>
 </div>
+
+<script>
+    (function () {
+        const tipo = document.getElementById('tipo');
+        const asterisco = document.getElementById('targa-obbligatoria');
+
+        function aggiorna() {
+            asterisco.classList.toggle('d-none', tipo.value === 'altro');
+        }
+
+        tipo.addEventListener('change', aggiorna);
+        aggiorna();
+    })();
+</script>

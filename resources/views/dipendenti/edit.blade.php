@@ -4,9 +4,12 @@
 
 @section('contenuto')
     <h1 class="h4 mb-3">Modifica {{ $dipendente->nome_completo }}</h1>
+
     <form method="POST" action="{{ route('dipendenti.update', $dipendente) }}">
         @csrf
         @method('PUT')
         @include('dipendenti._form')
     </form>
+
+    @include('documenti._pannello', ['proprietario' => $dipendente, 'entita' => 'dipendenti'])
 @endsection

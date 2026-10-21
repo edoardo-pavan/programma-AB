@@ -53,7 +53,7 @@
             <tbody>
                 @forelse ($mezzi as $m)
                     <tr class="{{ $m->attivo ? '' : 'text-muted' }}">
-                        <td class="fw-semibold">{{ $m->targa }}
+                        <td class="fw-semibold">{{ $m->etichetta }}
                             @unless ($m->attivo) <span class="badge text-bg-secondary">non attivo</span> @endunless
                         </td>
                         <td>

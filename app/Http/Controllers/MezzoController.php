@@ -63,21 +63,29 @@ class MezzoController extends Controller
 
     private function validati(Request $request, ?Mezzo $mezzo = null): array
     {
-        // La targa viene normalizzata: maiuscole e senza spazi
-        $request->merge([
-            'targa' => strtoupper(str_replace(' ', '', (string) $request->input('targa'))),
-        ]);
+        // Targa: maiuscole, senza spazi, null se vuota
+        $targa = strtoupper(str_replace(' ', '', (string) $request->input('targa')));
+        $request->merge(['targa' => $targa !== '' ? $targa : null]);
 
         $dati = $request->validate([
             'tipo' => ['required', Rule::in(array_keys(Mezzo::TIPI))],
             'sottotipo' => ['nullable', Rule::in(array_keys(Mezzo::SOTTOTIPI))],
-            'targa' => ['required', 'string', 'max:15', Rule::unique('mezzi', 'targa')->ignore($mezzo?->id)],
+            'targa' => [
+                // Obbligatoria per tutti i tipi tranne "Altro"
+                Rule::requiredIf($request->input('tipo') !== 'altro'),
+                'nullable',
+                'string',
+                'max:15',
+                Rule::unique('mezzi', 'targa')->ignore($mezzo?->id),
+            ],
             'marca' => ['nullable', 'string', 'max:100'],
             'modello' => ['nullable', 'string', 'max:100'],
             'anno' => ['nullable', 'integer', 'between:1980,' . (now()->year + 1)],
             'telaio' => ['nullable', 'string', 'max:30'],
             'portata_t' => ['nullable', 'numeric', 'between:0,99'],
             'note' => ['nullable', 'string'],
+        ], [], [
+            'portata_t' => 'portata',
         ]);
 
         $dati['adr'] = $request->boolean('adr');

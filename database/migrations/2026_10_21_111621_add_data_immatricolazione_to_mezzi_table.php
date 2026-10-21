@@ -14,12 +14,11 @@ return new class extends Migration
     Schema::table('mezzi', function (Blueprint $table) {
         $table->date('data_immatricolazione')->nullable()->after('anno');
     });
-}
 
-public function down(): void
-{
-    Schema::table('mezzi', function (Blueprint $table) {
-        $table->dropColumn('data_immatricolazione');
-    });
-}
+    public function down(): void
+    {
+        Schema::table('mezzi', function (Blueprint $table) {
+            $table->dropColumn('data_immatricolazione');
+        });
+    }
 };

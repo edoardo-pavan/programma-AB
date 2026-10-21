@@ -30,10 +30,9 @@ return new class extends Migration
         $table->boolean('attivo')->default(true);
         $table->timestamps();
     });
-}
 
-public function down(): void
-{
-    Schema::dropIfExists('dipendenti');
-}
+    public function down(): void
+    {
+        Schema::dropIfExists('dipendenti');
+    }
 };

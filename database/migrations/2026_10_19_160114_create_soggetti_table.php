@@ -32,7 +32,6 @@ return new class extends Migration
         $table->boolean('attivo')->default(true);
         $table->timestamps();
     });
-}
 
     /**
      * Reverse the migrations.

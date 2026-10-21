@@ -26,10 +26,9 @@ return new class extends Migration
         $table->text('note')->nullable();
         $table->timestamps();
     });
-}
 
-public function down(): void
-{
-    Schema::dropIfExists('documenti');
-}
+    public function down(): void
+    {
+        Schema::dropIfExists('documenti');
+    }
 };

@@ -11,6 +11,12 @@ class DipendenteTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(\App\Models\User::factory()->create());
+    }
+
     public function test_dipendente_viene_creato_e_listato(): void
     {
         $dipendente = Dipendente::create([

@@ -10,6 +10,12 @@ class MezzoTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(\App\Models\User::factory()->create());
+    }
+
     public function test_mezzo_viene_creato_e_listato(): void
     {
         $mezzo = Mezzo::create([

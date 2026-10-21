@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Viaggio extends Model
 {
+    protected $table = 'viaggi';
+
     protected $guarded = [];
 
     protected $casts = [

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Offerta extends Model
 {
+    protected $table = 'offerte';
+
     protected $guarded = [];
 
     protected $attributes = [

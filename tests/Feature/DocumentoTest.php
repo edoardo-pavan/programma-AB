@@ -12,6 +12,12 @@ class DocumentoTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs(\App\Models\User::factory()->create());
+    }
+
     public function test_documento_viene_creato_allegato_al_mezzo(): void
     {
         $mezzo = Mezzo::create(['tipo' => 'trattore', 'targa' => 'AA000BB', 'attivo' => true]);
@@ -27,7 +33,7 @@ class DocumentoTest extends TestCase
         ])->assertRedirect();
 
         $this->assertDatabaseHas('documenti', [
-            'documentabile_type' => Mezzo::class,
+            'documentabile_type' => 'mezzo',
             'documentabile_id' => $mezzo->id,
             'tipo' => 'assicurazione',
             'numero' => 'POL-123',
@@ -55,7 +61,7 @@ class DocumentoTest extends TestCase
         ])->assertRedirect();
 
         $this->assertDatabaseHas('documenti', [
-            'documentabile_type' => Dipendente::class,
+            'documentabile_type' => 'dipendente',
             'documentabile_id' => $dipendente->id,
             'tipo' => 'patente',
         ]);
@@ -66,7 +72,7 @@ class DocumentoTest extends TestCase
         $mezzo = Mezzo::create(['tipo' => 'trattore', 'targa' => 'AA000BB', 'attivo' => true]);
 
         Documento::create([
-            'documentabile_type' => Mezzo::class,
+            'documentabile_type' => 'mezzo',
             'documentabile_id' => $mezzo->id,
             'tipo' => 'assicurazione',
             'data_scadenza' => now()->addDays(10),
@@ -74,7 +80,7 @@ class DocumentoTest extends TestCase
         ]);
 
         Documento::create([
-            'documentabile_type' => Mezzo::class,
+            'documentabile_type' => 'mezzo',
             'documentabile_id' => $mezzo->id,
             'tipo' => 'assicurazione',
             'data_scadenza' => now()->addDays(20),

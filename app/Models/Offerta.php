@@ -10,6 +10,14 @@ class Offerta extends Model
 {
     protected $guarded = [];
 
+    protected $attributes = [
+        'peso_minimo_fatturabile' => 0,
+        'fermo_macchina_ore' => 0,
+        'prezzo_fermo_macchina_ora' => 0,
+        'supplementi' => 0,
+        'totale' => 0,
+    ];
+
     protected $casts = [
         'peso_min' => 'decimal:2',
         'peso_max' => 'decimal:2',

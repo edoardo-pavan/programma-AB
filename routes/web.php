@@ -31,13 +31,15 @@ Auth::routes(['register' => false]);
     Route::delete('documenti/{documento}', [DocumentoController::class, 'destroy'])->name('documenti.destroy');
     Route::get('scadenze', [ScadenzaController::class, 'index'])->name('scadenze.index');
 
-Route::resource('offerte', OffertaController::class)
-    ->except(['show'])
-    ->parameters(['offerte' => 'offerta']);
+Route::middleware('auth')->group(function () {
+    Route::resource('offerte', OffertaController::class)
+        ->except(['show'])
+        ->parameters(['offerte' => 'offerta']);
 
-Route::get('offerte/{offerta}', [OffertaController::class, 'show'])->name('offerte.show');
-Route::post('offerte/{offerta}/accetta', [OffertaController::class, 'accetta'])->name('offerte.accetta');
-Route::post('offerte/{offerta}/rifiuta', [OffertaController::class, 'rifiuta'])->name('offerte.rifiuta');
+    Route::get('offerte/{offerta}', [OffertaController::class, 'show'])->name('offerte.show');
+    Route::post('offerte/{offerta}/accetta', [OffertaController::class, 'accetta'])->name('offerte.accetta');
+    Route::post('offerte/{offerta}/rifiuta', [OffertaController::class, 'rifiuta'])->name('offerte.rifiuta');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

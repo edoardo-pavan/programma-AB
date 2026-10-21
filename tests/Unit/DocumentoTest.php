@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Documento;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class DocumentoTest extends TestCase
 {

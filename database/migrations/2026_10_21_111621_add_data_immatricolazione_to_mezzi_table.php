@@ -10,10 +10,11 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('mezzi', function (Blueprint $table) {
-        $table->date('data_immatricolazione')->nullable()->after('anno');
-    });
+    {
+        Schema::table('mezzi', function (Blueprint $table) {
+            $table->date('data_immatricolazione')->nullable()->after('anno');
+        });
+    }
 
     public function down(): void
     {

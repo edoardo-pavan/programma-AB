@@ -36,8 +36,38 @@
         </div>
         <div class="col-lg-4">
             <div class="bovi-card">
-                <h2 class="h6">Scadenze prossime</h2>
-                <p class="text-muted mb-0">Qui compariranno le scadenze di mezzi e dipendenti.</p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="h6 mb-0">Scadenze prossime</h2>
+                    <a href="{{ route('scadenze.index') }}" class="small">Vedi tutte</a>
+                </div>
+
+                @forelse ($scadenze as $d)
+                    @php
+                        $p = $d->documentabile;
+                        $èMezzo = $p instanceof \App\Models\Mezzo;
+                        $nome = $èMezzo ? $p->etichetta : $p->nome_completo;
+                        $url = ($èMezzo ? route('mezzi.edit', $p) : route('dipendenti.edit', $p)) . '#documenti';
+                    @endphp
+                    <div class="py-2 border-top">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <div>
+                                <div class="fw-semibold">{{ $d->etichetta_tipo }}</div>
+                                <a href="{{ $url }}" class="small text-decoration-none">
+                                    <i class="bi {{ $èMezzo ? 'bi-truck' : 'bi-person' }}"></i> {{ $nome }}
+                                </a>
+                            </div>
+                            <span class="badge {{ $d->classe_badge }} text-nowrap">{{ $d->testo_scadenza }}</span>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-muted mb-0">Nessuna scadenza entro {{ \App\Models\Documento::GIORNI_AVVISO }} giorni. 👍</p>
+                @endforelse
+
+                @if ($totaleScadenze > $scadenze->count())
+                    <div class="small text-muted border-top pt-2">
+                        + altre {{ $totaleScadenze - $scadenze->count() }} da gestire
+                    </div>
+                @endif
             </div>
         </div>
     </div>

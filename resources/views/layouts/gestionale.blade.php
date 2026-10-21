@@ -16,7 +16,7 @@
         ['Clienti e fornitori', 'bi-people', 'soggetti.index', 'soggetti.*'],
         ['Mezzi', 'bi-truck-flatbed', 'mezzi.index', 'mezzi.*'],
         ['Dipendenti', 'bi-person-badge', 'dipendenti.index', 'dipendenti.*'],
-        ['Scadenze',             'bi-calendar-event',     null,   null],
+        ['Scadenze',             'bi-calendar-event',     'scadenze.index', 'scadenze.*'],
         ['Report',               'bi-bar-chart',          null,   null],
         ['Impostazioni',         'bi-gear',               null,   null],
     ];

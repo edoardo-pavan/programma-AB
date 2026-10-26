@@ -12,7 +12,7 @@
     $menu = [
         ['Dashboard',            'bi-house-door-fill',    'home', 'home'],
         ['Viaggi',               'bi-truck',              null,   null],
-        ['Offerte',              'bi-file-earmark-text',  'offerte.index', 'offerte.*'],
+        ['Offerte',              'bi-file-earmark-text',  null,   null],
         ['Clienti e fornitori', 'bi-people', 'soggetti.index', 'soggetti.*'],
         ['Mezzi', 'bi-truck-flatbed', 'mezzi.index', 'mezzi.*'],
         ['Dipendenti', 'bi-person-badge', 'dipendenti.index', 'dipendenti.*'],

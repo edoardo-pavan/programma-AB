@@ -16,7 +16,6 @@ class OffertaTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actingAs(User::factory()->create());
     }
 
     public function test_elenco_offerte_richiede_autenticazione(): void
@@ -26,6 +25,8 @@ class OffertaTest extends TestCase
 
     public function test_offerta_viene_creata_come_bozza(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
@@ -57,17 +58,18 @@ class OffertaTest extends TestCase
 
     public function test_offerta_pubblicata_riceve_numero_progressivo(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'bozza',
         ]);
-        $offerta->save();
 
         $this->post('/offerte/' . $offerta->id . '/pubblica')
             ->assertRedirect('/offerte/' . $offerta->id)
@@ -84,26 +86,26 @@ class OffertaTest extends TestCase
 
     public function test_seconda_offerta_pubblicata_riceve_numero_incrementato(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta1 = Offerta::factory()->make([
+        $offerta1 = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'bozza',
         ]);
-        $offerta1->save();
         $this->post('/offerte/' . $offerta1->id . '/pubblica');
 
-        $offerta2 = Offerta::factory()->make([
+        $offerta2 = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'bozza',
         ]);
-        $offerta2->save();
         $this->post('/offerte/' . $offerta2->id . '/pubblica');
 
         $this->assertDatabaseHas('offerte', ['id' => $offerta1->id, 'numero' => 1]);
@@ -112,18 +114,19 @@ class OffertaTest extends TestCase
 
     public function test_offerta_pubblicata_non_si_può_modificare(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'attiva',
             'numero' => 1,
         ]);
-        $offerta->save();
 
         $this->put('/offerte/' . $offerta->id, [
             'data_offerta' => '2026-10-22',
@@ -141,18 +144,19 @@ class OffertaTest extends TestCase
 
     public function test_offerta_pubblicata_non_si_può_eliminare(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'attiva',
             'numero' => 1,
         ]);
-        $offerta->save();
 
         $this->delete('/offerte/' . $offerta->id)
             ->assertRedirect('/offerte/' . $offerta->id)
@@ -163,17 +167,18 @@ class OffertaTest extends TestCase
 
     public function test_bozza_si_può_eliminare(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'bozza',
         ]);
-        $offerta->save();
 
         $this->delete('/offerte/' . $offerta->id)
             ->assertRedirect('/offerte?stato=bozze')
@@ -184,11 +189,13 @@ class OffertaTest extends TestCase
 
     public function test_copia_offerta_crea_nuova_bozza(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $originale = Offerta::factory()->make([
+        $originale = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
@@ -196,7 +203,6 @@ class OffertaTest extends TestCase
             'numero' => 5,
             'prezzo' => 20.00,
         ]);
-        $originale->save();
 
         $this->post('/offerte/' . $originale->id . '/copia')
             ->assertRedirect()->assertSessionHas('ok');
@@ -211,18 +217,19 @@ class OffertaTest extends TestCase
 
     public function test_offerta_attiva_si_può_archiviare(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'attiva',
             'numero' => 1,
         ]);
-        $offerta->save();
 
         $this->post('/offerte/' . $offerta->id . '/archivia')
             ->assertRedirect()->assertSessionHas('ok');
@@ -232,18 +239,19 @@ class OffertaTest extends TestCase
 
     public function test_offerta_archiviata_si_può_riattivare(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
 
-        $offerta = Offerta::factory()->make([
+        $offerta = Offerta::factory()->create([
             'cliente_id' => $cliente->id,
             'partenza_luogo_id' => $partenza->id,
             'destinazione_luogo_id' => $destinazione->id,
             'stato' => 'archiviata',
             'numero' => 1,
         ]);
-        $offerta->save();
 
         $this->post('/offerte/' . $offerta->id . '/riattiva')
             ->assertRedirect()->assertSessionHas('ok');
@@ -253,6 +261,8 @@ class OffertaTest extends TestCase
 
     public function test_elenco_offerta_filtra_per_stato(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $partenza = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
         $destinazione = Luogo::factory()->create(['nome' => 'Roma', 'comune' => 'Roma', 'attivo' => true]);
@@ -279,6 +289,8 @@ class OffertaTest extends TestCase
 
     public function test_validazione_partenza_diversa_da_destinazione(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $cliente = Soggetto::factory()->create(['is_cliente' => true, 'attivo' => true]);
         $luogo = Luogo::factory()->create(['nome' => 'Milano', 'comune' => 'Milano', 'attivo' => true]);
 
